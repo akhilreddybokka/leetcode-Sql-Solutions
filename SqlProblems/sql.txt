@@ -1,0 +1,33 @@
+1. 
+
+SELECT review_id, product_id, review_text
+FROM product_reviews                                        
+WHERE (LOWER(review_text) LIKE '%excellent%' OR LOWER(review_text) LIKE '%amazing%')            
+  AND LOWER(review_text) NOT LIKE '%not excellent%'           
+  AND LOWER(review_text) NOT LIKE '%not amazing%'             
+ORDER BY review_id ASC;
+
+2. 
+select category,sum(amount) as total_sales_amount from sales
+where YEAR(order_date)=2022 AND MONTH(order_date)=02 and
+DAYOFWEEK(order_date) BETWEEN 2 AND 6    
+group by category
+order by total_sales_amount asc;
+
+3. 
+SELECT C.category_name,
+       COALESCE(SUM(S.amount), 0) AS total_sales_amount
+FROM categories C
+LEFT JOIN sales S 
+  ON S.category_id = C.category_id
+GROUP BY C.category_name
+ORDER BY total_sales_amount ASC;
+
+4. 
+select D.department_name,
+Round(Avg(E.salary),2) As Avg_Salary 
+from Employees E
+left Join Departments D on D.department_id=E.department_id
+group by D.department_name
+having count(Distinct E.employee_id) > 2
+order by Avg(E.salary) desc
